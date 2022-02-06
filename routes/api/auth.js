@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const {User, schemas} = require("../../models/user");
-// const CreateError = require("http-errors");
 
 const router = express.Router();
 
