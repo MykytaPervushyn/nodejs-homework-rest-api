@@ -6,8 +6,8 @@ const Joi = require("joi");
 const userSchema = Schema({
     password: {
         type: String,
-        required: [true, 'Set password for user'],
-        minlength: 6
+        required: [true, 'Set password for user']
+        // minlength: 6
     },
     email: {
         type: String,
@@ -20,12 +20,15 @@ const userSchema = Schema({
         enum: ["starter", "pro", "business"],
         default: "starter"
     },
-    token: String
+    token: {
+        type: String,
+        default: ""
+    }
 }, { versionKey: false, timestamps: true });
 
 const signupJoiSchema = Joi.object({
     email: Joi.string().required(),
-    password: Joi.string
+    password: Joi.string().required()
 })
 
 const User = model("user", userSchema);
