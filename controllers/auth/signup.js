@@ -2,6 +2,9 @@ const { User, schemas } = require("../../models/user");
 const CreateError = require("http-errors");
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
+const { v4 } = require("uuid");
+
+const { sendMail } = require("../../helpers");
 
 const signup = async (req, res, next) => {
     try {
@@ -17,11 +20,19 @@ const signup = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
         const avatarURL = gravatar.url(email);
+        const verificationToken = v4();
         await User.create({
             email,
             avatarURL,
-            password: hashPassword
+            password: hashPassword,
+            verificationToken
         });
+        const mail = {
+            to: email,
+            subject: "Підтвердження email",
+            html: `<a target="_blank" href='http://localhost:8080/api/users/verify/${verificationToken}'>Натисніть щоб підтвердити</a>`
+        }
+        await sendMail(mail);
         res.status(201).json({
             user: {
                 email: email,

@@ -5,6 +5,10 @@ const ctrl = require("../../controllers/users");
 
 const router = express.Router();
 
+router.get("/verify/:verificationToken", ctrl.verificationToken)
+
+router.post("/verify", ctrl.verify)
+
 router.get('/current', authenticate, ctrl.current)
 
 router.get('/logout', authenticate, ctrl.logout)
